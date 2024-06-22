@@ -5,6 +5,7 @@
 
 #include "DHT.h" // Include DHT sensor library
 #include <BlynkSimpleEsp32.h> //Include Blynk library
+#include "WiFi.h"
 
 #define DHTPIN 18 // DHT sensor pin
 #define DHTTYPE DHT22 // Define DHT22
@@ -24,6 +25,7 @@
 
 #define MMaker 13// Mistmaker pin
 #define HUMIDITY_THRESHOLD 30.0  // Threshold for humidity
+#define TEMPERATURE_THRESHOLD 20.0  // Threshold for humidity
 
 // define virtual for blynk connection
 #define VIRTUAL_PIN_TEMP V6
@@ -104,10 +106,10 @@ void loop() {
     Serial.print(t);
     Serial.println("°C");
 
-    if (h > HUMIDITY_THRESHOLD) {
-      digitalWrite(MMaker, HIGH);  // Turn on mistmaker
+    if (h < HUMIDITY_THRESHOLD || t < TEMPERATURE_THRESHOLD) {
+      digitalWrite(MMaker, LOW);  // Turn on mistmaker
     } else {
-      digitalWrite(MMaker, LOW);   // Ensure mistmaker is off if below threshold
+      digitalWrite(MMaker, HIGH);   // Ensure mistmaker is off if below threshold
     }
   }
   }
